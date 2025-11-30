@@ -1,0 +1,16 @@
+[
+    {"id": 1, "age": "<=30", "income": "high", "student": "no", "credit_rating": "fair", "buys_computer": "no"},
+    {"id": 2, "age": "<=30", "income": "high", "student": "no", "credit_rating": "excellent", "buys_computer": "no"},
+    {"id": 3, "age": "31...40", "income": "high", "student": "no", "credit_rating": "fair", "buys_computer": "yes"},
+    {"id": 4, "age": ">40", "income": "medium", "student": "no", "credit_rating": "fair", "buys_computer": "yes"},
+    {"id": 5, "age": ">40", "income": "low", "student": "yes", "credit_rating": "fair", "buys_computer": "yes"},
+    {"id": 6, "age": ">40", "income": "low", "student": "yes", "credit_rating": "excellent", "buys_computer": "no"},
+    {"id": 7, "age": "31...40", "income": "low", "student": "yes", "credit_rating": "excellent", "buys_computer": "yes"},
+    {"id": 8, "age": "<=30", "income": "medium", "student": "no", "credit_rating": "fair", "buys_computer": "no"},
+    {"id": 9, "age": "<=30", "income": "low", "student": "yes", "credit_rating": "fair", "buys_computer": "yes"},
+    {"id": 10, "age": ">40", "income": "medium", "student": "yes", "credit_rating": "fair", "buys_computer": "yes"},
+    {"id": 11, "age": "<=30", "income": "medium", "student": "yes", "credit_rating": "excellent", "buys_computer": "yes"},
+    {"id": 12, "age": "31...40", "income": "medium", "student": "no", "credit_rating": "excellent", "buys_computer": "yes"},
+    {"id": 13, "age": "31...40", "income": "high", "student": "yes", "credit_rating": "fair", "buys_computer": "yes"},
+    {"id": 14, "age": ">40", "income": "medium", "student": "no", "credit_rating": "excellent", "buys_computer": "no"}
+]

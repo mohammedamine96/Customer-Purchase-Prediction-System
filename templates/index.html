@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNN Similarity Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Similarity Analysis</h1>
+        <div class="query-card">
+            <div class="query-title">Target Query Instance</div>
+            <form action="/" method="get" id="queryForm">
+                <div class="query-form-grid">
+                    {% for attr, options in mappings.items() %}
+                    <div class="query-group">
+                        <label class="query-label">{{ attr }}</label>
+                        <select name="{{ attr }}" id="input-{{ attr }}" class="query-select"
+                            onchange="this.form.submit()">
+                            {% for option in options.keys() %}
+                            <option value="{{ option }}" {% if query[attr]==option %}selected{% endif %}>
+                                {{ option }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+
+        <div class="results-section">
+            <!-- Simple Matching Section -->
+            <div class="card">
+                <h2>Simple Matching Similarity</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Similarity</th>
+                            <th>Class</th>
+                            <th>Matches</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in simple_results %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td class="similarity-score">{{ '%0.2f' % row.similarity }}</td>
+                            <td><span class="class-{{ row.class }}">{{ row.class }}</span></td>
+                            <td class="matches-display">
+                                [
+                                {% for m in row.matches %}
+                                <span class="match-{{ m }}">{{ m }}</span>
+                                {{ "," if not loop.last }}
+                                {% endfor %}
+                                ]
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Cosine Similarity Section -->
+            <div class="card">
+                <h2>Cosine Similarity (Ordinal)</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Similarity</th>
+                            <th>Class</th>
+                            <th>Vector</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in cosine_results %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td class="similarity-score">{{ '%0.4f' % row.similarity }}</td>
+                            <td><span class="class-{{ row.class }}">{{ row.class }}</span></td>
+                            <td class="vector-display">{{ row.vector }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="prediction-section">
+            <div class="prediction-card">
+                <div class="prediction-title">Final Prediction (Simple Matching)</div>
+                <div class="prediction-value prediction-{{ simple_prediction }}">
+                    {{ simple_prediction|upper }}
+                </div>
+                <div class="prediction-method">Based on top 5 neighbors</div>
+            </div>
+
+            <div class="prediction-card">
+                <div class="prediction-title">Final Prediction (Cosine)</div>
+                <div class="prediction-value prediction-{{ cosine_prediction }}">
+                    {{ cosine_prediction|upper }}
+                </div>
+                <div class="prediction-method">Based on top 5 neighbors</div>
+            </div>
+
+            <div class="prediction-card">
+                <div class="prediction-title">Vote Distribution (Simple Matching)</div>
+                <div style="height: 160px; width: 160px; margin: 0 auto; position: relative;">
+                    <canvas id="simpleChart"></canvas>
+                </div>
+                <div class="prediction-method">Simple Matching Neighbors</div>
+            </div>
+
+            <div class="prediction-card">
+                <div class="prediction-title">Vote Distribution (Cosine)</div>
+                <div style="height: 160px; width: 160px; margin: 0 auto; position: relative;">
+                    <canvas id="cosineChart"></canvas>
+                </div>
+                <div class="prediction-method">Cosine Similarity Neighbors</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cosineResults = {{ cosine_results | tojson
+        }};
+        const simpleResults = {{ simple_results | tojson }};
+
+        // Get colors from CSS variables
+        const style = getComputedStyle(document.body);
+        const colorPrimary = style.getPropertyValue('--color-primary').trim() || '#3f47cd';
+        const colorAccent = style.getPropertyValue('--color-accent').trim() || '#d08e53';
+        const textSecondary = style.getPropertyValue('--text-secondary').trim() || '#a0a0a0';
+
+        function createChart(ctx, results) {
+            const yesCount = results.filter(r => r.class === 'yes').length;
+            const noCount = results.filter(r => r.class === 'no').length;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Yes', 'No'],
+                    datasets: [{
+                        data: [yesCount, noCount],
+                        backgroundColor: [colorPrimary, colorAccent],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: textSecondary,
+                                font: {
+                                    family: "'Outfit', 'Inter', system-ui, sans-serif",
+                                    size: 12
+                                },
+                                boxWidth: 15
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.chart._metasets[context.datasetIndex].total;
+                                    const percentage = Math.round((value / total) * 100) + '%';
+                                    return `${label}: ${value} (${percentage})`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        const cosineCtx = document.getElementById('cosineChart').getContext('2d');
+        createChart(cosineCtx, cosineResults);
+
+        const simpleCtx = document.getElementById('simpleChart').getContext('2d');
+        createChart(simpleCtx, simpleResults);
+        });
+    </script>
+</body>
+
+</html>
