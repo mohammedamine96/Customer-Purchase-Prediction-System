@@ -4,7 +4,7 @@ import time
 from app import app
 
 def start_server():
-    app.run(port=5000)
+    app.run(debug=True, use_reloader=False, port=5000)
 
 if __name__ == '__main__':
     # Start the Flask server in a separate thread

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KNN Similarity Analysis</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -125,74 +125,69 @@
                 <div class="prediction-method">Cosine Similarity Neighbors</div>
             </div>
         </div>
-    </div>
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Mohammed Amine Darri. All rights reserved.</p>
+                <a href="https://github.com/mohammedamine96/Customer-Purchase-Prediction-System" target="_blank"
+                    class="github-link">
+                    View Project on GitHub
+                </a>
+                const textSecondary = style.getPropertyValue('--text-secondary').trim() || '#a0a0a0';
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const cosineResults = {{ cosine_results | tojson
-        }};
-        const simpleResults = {{ simple_results | tojson }};
+                function createChart(ctx, results) {
+                const yesCount = results.filter(r => r.class === 'yes').length;
+                const noCount = results.filter(r => r.class === 'no').length;
 
-        // Get colors from CSS variables
-        const style = getComputedStyle(document.body);
-        const colorPrimary = style.getPropertyValue('--color-primary').trim() || '#3f47cd';
-        const colorAccent = style.getPropertyValue('--color-accent').trim() || '#d08e53';
-        const textSecondary = style.getPropertyValue('--text-secondary').trim() || '#a0a0a0';
-
-        function createChart(ctx, results) {
-            const yesCount = results.filter(r => r.class === 'yes').length;
-            const noCount = results.filter(r => r.class === 'no').length;
-
-            new Chart(ctx, {
+                new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Yes', 'No'],
-                    datasets: [{
-                        data: [yesCount, noCount],
-                        backgroundColor: [colorPrimary, colorAccent],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
+                labels: ['Yes', 'No'],
+                datasets: [{
+                data: [yesCount, noCount],
+                backgroundColor: [colorPrimary, colorAccent],
+                borderWidth: 0,
+                hoverOffset: 4
+                }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                color: textSecondary,
-                                font: {
-                                    family: "'Outfit', 'Inter', system-ui, sans-serif",
-                                    size: 12
-                                },
-                                boxWidth: 15
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const label = context.label || '';
-                                    const value = context.raw || 0;
-                                    const total = context.chart._metasets[context.datasetIndex].total;
-                                    const percentage = Math.round((value / total) * 100) + '%';
-                                    return `${label}: ${value} (${percentage})`;
-                                }
-                            }
-                        }
-                    },
-                    cutout: '60%'
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                legend: {
+                position: 'right',
+                labels: {
+                color: textSecondary,
+                font: {
+                family: "'Outfit', 'Inter', system-ui, sans-serif",
+                size: 12
+                },
+                boxWidth: 15
                 }
-            });
-        }
+                },
+                tooltip: {
+                callbacks: {
+                label: function (context) {
+                const label = context.label || '';
+                const value = context.raw || 0;
+                const total = context.chart._metasets[context.datasetIndex].total;
+                const percentage = Math.round((value / total) * 100) + '%';
+                return `${label}: ${value} (${percentage})`;
+                }
+                }
+                }
+                },
+                cutout: '60%'
+                }
+                });
+                }
 
-        const cosineCtx = document.getElementById('cosineChart').getContext('2d');
-        createChart(cosineCtx, cosineResults);
+                const cosineCtx = document.getElementById('cosineChart').getContext('2d');
+                createChart(cosineCtx, cosineResults);
 
-        const simpleCtx = document.getElementById('simpleChart').getContext('2d');
-        createChart(simpleCtx, simpleResults);
-        });
-    </script>
+                const simpleCtx = document.getElementById('simpleChart').getContext('2d');
+                createChart(simpleCtx, simpleResults);
+                });
+                </script>
 </body>
 
 </html>

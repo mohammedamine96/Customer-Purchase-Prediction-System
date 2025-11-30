@@ -231,201 +231,6 @@ tr:hover td {
     background: rgba(239, 68, 68, 0.15);
     padding: 0.35rem 0.85rem;
     border-radius: 9999px;
-}
-
-h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 3rem;
-    background: linear-gradient(to right, #fff, var(--text-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.02em;
-}
-
-.card,
-.query-card,
-.prediction-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    box-shadow: var(--shadow-lg);
-    border: var(--glass-border);
-    margin-bottom: 2rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover,
-.query-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.6);
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-.query-title {
-    font-size: 1.1rem;
-    color: var(--color-accent);
-    margin-bottom: 2rem;
-    font-weight: 700;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-}
-
-.query-form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 2rem;
-}
-
-.query-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.query-label {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.query-select {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    background-color: var(--input-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.75rem;
-    color: var(--text-primary);
-    font-size: 1rem;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23d08e53' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 1rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-}
-
-.query-select:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.query-select:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(63, 71, 205, 0.25);
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Dropdown options styling (browser dependent, but we can try) */
-.query-select option {
-    background-color: #1e1e1e;
-    color: var(--text-primary);
-    padding: 10px;
-}
-
-.results-section {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-}
-
-@media (min-width: 1024px) {
-    .results-section {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-h2 {
-    color: var(--text-primary);
-    margin-top: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 1.5rem;
-    margin-bottom: 2rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-h2::before {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 24px;
-    background: var(--gradient-accent);
-    border-radius: 2px;
-}
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    font-size: 0.9rem;
-}
-
-th {
-    text-align: left;
-    padding: 1rem;
-    color: var(--color-brown);
-    /* Using the brown from palette for headers */
-    filter: brightness(1.5);
-    /* Lighten it a bit for dark mode readability */
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-td {
-    padding: 1.25rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-tr:hover td {
-    background-color: rgba(255, 255, 255, 0.02);
-    color: var(--text-primary);
-}
-
-.similarity-score {
-    font-family: 'Monaco', 'Consolas', monospace;
-    font-weight: 700;
-    color: var(--color-primary);
-    filter: brightness(1.3);
-}
-
-.class-yes {
-    color: #6ee7b7;
-    font-weight: 700;
-    background: rgba(16, 185, 129, 0.15);
-    padding: 0.35rem 0.85rem;
-    border-radius: 9999px;
-    display: inline-block;
-    font-size: 0.75rem;
-    border: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.class-no {
-    color: #fca5a5;
-    font-weight: 700;
-    background: rgba(239, 68, 68, 0.15);
-    padding: 0.35rem 0.85rem;
-    border-radius: 9999px;
     display: inline-block;
     font-size: 0.75rem;
     border: 1px solid rgba(239, 68, 68, 0.2);
@@ -500,4 +305,32 @@ tr:hover td {
     font-size: 0.85rem;
     color: var(--color-neutral);
     font-style: italic;
+}
+
+.footer {
+    margin-top: 4rem;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.github-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.github-link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
 }
